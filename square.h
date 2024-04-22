@@ -11,7 +11,7 @@ class Square{
 
     public:
     Square(Vector2f size);
-    void Update (); 
+    void update (); 
     void drawTo (RenderWindow &obj); 
 
 }; 
