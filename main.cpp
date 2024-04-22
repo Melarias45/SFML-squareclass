@@ -1,8 +1,8 @@
 #include <SFML/Graphics.hpp>
 using namespace sf;
 
-float speedX =5.f; 
-float speedY =5.f; 
+
+Vector2f speed={5.f,5.f};
 
 int main()
 {
@@ -20,12 +20,16 @@ int main()
                 window.close();
         }
 
-        window.clear(); //si podemos antes lo de mover, se va a ver como barrido y no irse borrando para dar la ilusion de que se esta moviendo la figura. 
-        if (shape.getPosition().x+shape.getSize().x>=800||shape.getPosition().x<0)
-        speedX*=-1; 
-        if (shape.getPosition().y+shape.getSize().y>=600||shape.getPosition().y<0)
-        speedY*=-1; 
-        shape.move({speedX,speedY}); //para mover figura en x y en y 
+        // window.clear(); //si podemos antes lo de mover, se va a ver como barrido y no irse borrando para dar la ilusion de que se esta moviendo la figura. 
+        if (shape.getPosition().x+shape.getSize().x>=800||shape.getPosition().x<0){
+        shape.setFillColor(Color::Magenta);  
+        speed.x*=-1; 
+        }
+        if (shape.getPosition().y+shape.getSize().y>=600||shape.getPosition().y<0){
+        shape.setFillColor(Color::Yellow);  
+        speed.y*=-1;  
+        }
+        shape.move(speed); //para mover figura en x y en y 
         window.draw(shape);
         window.display();
     }
