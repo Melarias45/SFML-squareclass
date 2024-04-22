@@ -1,16 +1,17 @@
-#ifndef square_h
-#define square_h
+#ifndef rectangle_hpp
+#define rectangle_hpp
 #include <SFML/Graphics.hpp>
 using namespace sf;
 
 
-class Square{
-    private:  
+class Rectangle{
+     
+    private: 
     Vector2f speed; 
     RectangleShape shape;
 
     public:
-    Square(Vector2f size);
+    Rectangle(Vector2f size);
     void update (); 
     void drawTo (RenderWindow &window); 
 
