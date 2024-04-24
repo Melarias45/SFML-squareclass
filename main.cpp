@@ -24,8 +24,8 @@ int main()
 
             if(event.type == Event::MouseButtonPressed){ //dar click a un boton del mouse es un evento. 
                 if(event.mouseButton.button == Mouse::Left){
-                    int w=rand()%50; //da unas dimensiones aleatorias
-                    int h=rand()%50; 
+                    int w=50; //da unas dimensiones aleatorias
+                    int h=50; 
                     int x=event.mouseButton.x; //toma las coordenadas x y y del evento y se las pasa al rectangulo
                     int y=event.mouseButton.y; 
 

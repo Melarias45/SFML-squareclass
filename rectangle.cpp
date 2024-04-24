@@ -52,7 +52,7 @@ void Rectangle::click(int x, int y)
 
     if (x >= this->shape.getPosition().x && this->shape.getPosition().x < this->shape.getPosition().x + x)
     {
-        cy = true;
+        cx = true;
     }
     if (y >= this->shape.getPosition().y && this->shape.getPosition().y < this->shape.getPosition().y + y)
     {
