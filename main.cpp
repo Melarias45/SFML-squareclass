@@ -23,8 +23,8 @@ int main()
         // window.clear(); //si podemos antes lo de mover, se va a ver como barrido y no irse borrando para dar la ilusion de que se esta moviendo la figura. 
         
         window.clear(); 
-        window.update(); 
-
+        shape.update(); 
+        shape.drawTo(window); 
         window.display();
     }
 

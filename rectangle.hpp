@@ -12,6 +12,7 @@ class Rectangle{
 
     public:
     Rectangle(Vector2f size);
+    
     void update (); 
     void drawTo (RenderWindow &window); 
 

@@ -2,7 +2,7 @@
 
 Rectangle::Rectangle(Vector2f size){
     this->shape=RectangleShape(size); //le pasamos un vector con variables tipo float, vector 2F es que hay 2 dimensiones. 
-    this->shape.setFillColor(Color(199,10,45))
+    this->shape.setFillColor(Color(199,10,45)); 
     this->speed=Vector2f(3.f,3.f); 
 }
 
