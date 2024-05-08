@@ -5,8 +5,8 @@ using namespace sf;
 using namespace std;
 
 int numCells = 20;
-int width = 500;
-int height = 500;
+int width = 700;
+int height = 700;
 
 int main()
 {
