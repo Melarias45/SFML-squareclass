@@ -11,8 +11,11 @@ private:
     vector<vector<int>> tablero;
     vector<vector<int>> siguiente;
     int rows, cols, w, h;
+    Vector2f speed;
+    Vector2f acc; 
 
 public:
+    
     Grid(int n, int w, int h);
     Grid(int rows, int cols);
 
