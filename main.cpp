@@ -1,8 +1,6 @@
 #include <SFML/Graphics.hpp>
-#include <vector>
-#include "grid.hpp"
+#include "Grid.hpp"
 using namespace sf;
-using namespace std;
 
 int numCells = 20;
 int width = 700;
@@ -11,7 +9,7 @@ int height = 700;
 int main()
 {
     RenderWindow window(VideoMode(width, height), "SFML works!");
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(6);
     Grid grid(numCells, width, height);
     while (window.isOpen())
     {
@@ -20,16 +18,20 @@ int main()
         {
             if (event.type == Event::Closed)
                 window.close();
-        }   if (event.type==Event::MouseButtonPressed){
-            if (event.mouseButton.button==Mouse::Left)
+
+            if (event.type == Event::MouseButtonPressed)
             {
-                int x=event.mouseButton.x; 
-                int y=event.mouseButton.y; 
-                grid.toggle(x,y); 
+                if (event.mouseButton.button == Mouse::Left)
+                {
+                    int x = event.mouseButton.x;
+                    int y = event.mouseButton.y;
+                    grid.toggle(x, y);
+                }
             }
         }
 
         window.clear();
+        grid.update();
         grid.drawTo(window);
         window.display();
     }

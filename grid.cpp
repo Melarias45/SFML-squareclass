@@ -1,52 +1,47 @@
-#include "grid.hpp"
+#include "Grid.hpp"
 
 Grid::Grid(int rows, int cols)
 {
     this->rows = rows;
     this->cols = cols;
-
     for (int i = 0; i < rows; i++)
     {
-        tablero.push_back({}); // le pasamos un vector vacio.
+        tablero.push_back({});
         for (int j = 0; j < cols; j++)
         {
             tablero[i].push_back(0);
         }
     }
-};
-
+    this->siguiente = vector<vector<int>>(rows, vector<int>(cols, 0));
+}
 Grid::Grid(int n, int w, int h)
 {
-    // n es el numero de celdas que quieres en cada columna y fila, ej: (4x4), w es el ancho, h es el alto,
-    this->w = w;
-    this->h = h;
-
-    //
     this->rows = n;
     this->cols = n;
-
+    this->w = w;
+    this->h = h;
     for (int i = 0; i < this->rows; i++)
     {
-        tablero.push_back({}); // le pasamos un vector vacio.
+        tablero.push_back({});
         for (int j = 0; j < this->cols; j++)
         {
             tablero[i].push_back(rand() % 2);
         }
     }
-};
+    this->siguiente = vector<vector<int>>(rows, vector<int>(cols, 0));
+}
 
 void Grid::drawTo(RenderWindow &window)
 {
-
-    this->tamX = this->w / this->cols; // divides el ancho de cada cuadro entre el num de columnas que tienes.
-    this->tamY = this->h / this->rows;
+    int sizeX = this->w / this->cols;
+    int sizeY = this->h / this->rows;
 
     for (int i = 0; i < this->rows; i++)
     {
         for (int j = 0; j < this->cols; j++)
         {
-            RectangleShape rect(Vector2f(tamX, tamY));
-            rect.setPosition(Vector2f(j * tamX, i * tamY)); // cada uno por el tamaño del rectangulo, primero se ponen las columnas y luego las filas.
+            RectangleShape rect(Vector2f(sizeX, sizeY));
+            rect.setPosition(Vector2f(j * sizeX, i * sizeY));
             rect.setOutlineThickness(1);
             rect.setOutlineColor(Color::Black);
             if (tablero[j][i] == 1)
@@ -56,24 +51,80 @@ void Grid::drawTo(RenderWindow &window)
             window.draw(rect);
         }
     }
-};
+}
 
 void Grid::toggle(int x, int y)
 {
-    this->tamX = this->w / this->cols;
-    this->tamY = this->h / this->rows;
+    int sizeX = this->w / this->cols;
+    int sizeY = this->h / this->rows;
 
-    int indexX = x / tamX; // para obtener la posicion donde se hizo click en x, se divide la cord en x entre el tamaño del cuadrito en x.
-    int indexY = y / tamY; // lo mismo para y.
+    int indexX = x / sizeX;
+    int indexY = y / sizeY;
 
-    /*
-        if(tablero[indexY][indexX]==0)
-            tablero[indexY][indexX]==1;
-        else{
-            tablero[indexY][indexX]==0;
-        }*/
+    // if (tablero[indexX][indexY] == 0)
+    // {
+    //     tablero[indexX][indexY] = 1;
+    // }
+    // else
+    // {
+    //     tablero[indexX][indexY] = 0;
+    // }
 
-    //  tablero[indexY][indexX]=tablero[indexY][indexX]==0?1:0;si es igual a 0, si si le pones un uno, sino le pones un cero.
+    // tablero[indexX][indexY] = tablero[indexX][indexY] == 0 ? 1 : 0;
 
     tablero[indexX][indexY] = (tablero[indexX][indexY] + 1) % 2;
+}
+
+void Grid::update()
+{
+    for (int i = 0; i < this->rows; i++)
+    {
+        for (int j = 0; j < this->cols; j++)
+        {
+            int vecinos = this->calcularVecinos(i, j);
+
+            if (this->tablero[i][j] == 1)
+            {
+                if (vecinos < 2 || vecinos > 3)
+                {
+                    this->siguiente[i][j] = 0;
+                }
+                else
+                {
+                    this->siguiente[i][j] = 1;
+                }
+            }
+            else
+            {
+                if (vecinos == 3)
+                {
+                    this->siguiente[i][j] = 1;
+                }
+                else
+                {
+                    this->siguiente[i][j] = 0;
+                }
+            }
+        }
+    }
+
+    this->tablero = this->siguiente;
+}
+
+int Grid::calcularVecinos(int i, int j)
+{
+    int vecinos = 0;
+    
+
+    // abajo
+    if (j < this->cols - 1 && this->tablero[i][j + 1] == 1)
+        vecinos++;
+    // abajo a la izquierda
+    if (j < this->cols - 1 && i > 0 && this->tablero[i - 1][j + 2] == 1)
+        vecinos++;
+    // abajo a la derecha
+    if (j < this->cols - 1 && i < this->rows - 1 && this->tablero[i + 1][j + 2] == 1)
+        vecinos++;
+
+    return vecinos;
 }
