@@ -13,6 +13,8 @@ Grid::Grid(int rows, int cols)
             tablero[i].push_back(0);
         }
     }
+
+    this->siguiente = vector<vector<int>>(rows, vector<int>(cols, 0)); // cada vector va ser un vector de tamaño cols que va a ser un vector de 0;
 };
 
 Grid::Grid(int n, int w, int h)
@@ -33,6 +35,7 @@ Grid::Grid(int n, int w, int h)
             tablero[i].push_back(rand() % 2);
         }
     }
+    this->siguiente = vector<vector<int>>(rows, vector<int>(cols, 0));
 };
 
 void Grid::drawTo(RenderWindow &window)
@@ -76,4 +79,84 @@ void Grid::toggle(int x, int y)
     //  tablero[indexY][indexX]=tablero[indexY][indexX]==0?1:0;si es igual a 0, si si le pones un uno, sino le pones un cero.
 
     tablero[indexX][indexY] = (tablero[indexX][indexY] + 1) % 2;
+}
+
+void Grid::update()
+{
+    /*
+    1- Para cada celda calcular cuantos vecinos vivos tiene
+    2- Ver si la celda estara viva o muerta en el siguiente a partir de los vecinos.
+    */
+
+    // para cada fila se va a checar cuantas filas tenemos.
+    for (int i = 0; i < this->rows; i++) // i son filas
+    {
+        for (int j = 0; j < this->cols; j++) // j son cols.
+        {
+            int vecinos = this->calcularVecinos(i, j); // primero calculamos los vecinos
+            if (this->tablero[i][j] == 1)
+            {
+                if (vecinos < 2 || vecinos > 3)
+                { //
+                    this->siguiente[i][j] = 0;
+                }
+                else
+                {
+                    this->siguiente[i][j] = 1;
+                }
+            }
+            else
+            {
+                if (vecinos == 3)
+                { // si tiene 3 vecinos sobrevive.
+                    this->siguiente[i][j] = 1;
+                }
+                else
+                {
+                    this->siguiente[i][j] = 0;
+                }
+            }
+        }
+    }
+    this->tablero = this->siguiente;
+}
+
+int Grid::calcularVecinos(int i, int j)
+{
+    int vecinos = 0;
+
+    //8 ifs porque hay 8 casillas alrededor de cada vecino y tenemos que revisar cada 1 de estas, x es i y y es j, hacia arriba es -, hacia abajo es +.
+    // arriba a la izquierda
+    if (i > 0 && j > 0 && this->tablero[i - 1][j - 1] == 1)
+        vecinos++;
+
+    // arriba a la dereceha.
+    if (i < this->rows - 1 && j > 0 && this->tablero[i + 1][j - 1] == 1)
+        vecinos++;
+
+    // arriba
+    if (j > 0 && this->tablero[i][j - 1] == 1)
+        vecinos++;
+
+    // abajo
+    if (j < this->cols - 1 && this->tablero[i][j + 1] == 1)
+        vecinos++;
+
+    // derecha
+    if (i < this->rows - 1 && this->tablero[i + 1][j] == 1)
+        vecinos++;
+
+    // izquierda
+    if (i > 0 && this->tablero[i - 1][j] == 1)
+        vecinos++;
+
+    // abajo a la izquierda
+    if (j < this->cols - 1 && i > 0 && this->tablero[i - 1][j + 1] == 1)
+        vecinos++;
+
+    // abajo a la dereceha.
+    if (j < this->cols - 1 && i < this->rows - 1 && this->tablero[i + 1][j + 1] == 1)
+        vecinos++;
+
+    return vecinos;
 }

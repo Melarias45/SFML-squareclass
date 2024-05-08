@@ -11,7 +11,7 @@ int height = 700;
 int main()
 {
     RenderWindow window(VideoMode(width, height), "SFML works!");
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(5);
     Grid grid(numCells, width, height);
     while (window.isOpen())
     {
@@ -30,6 +30,7 @@ int main()
         }
 
         window.clear();
+        grid.update(); 
         grid.drawTo(window);
         window.display();
     }
