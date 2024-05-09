@@ -3,8 +3,8 @@
 using namespace sf;
 
 int numCells = 20;
-int width = 700;
-int height = 700;
+int width = 800;
+int height = 800;
 
 int main()
 {

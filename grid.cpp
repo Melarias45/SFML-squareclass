@@ -70,66 +70,124 @@ void Grid::update()
     for (int i = 0; i < this->rows; i++)
     {
 
-        for (int j = 0; j < this->cols; j++)
+        for (int i = 0; i < this->rows; i++)
         {
-            if (tablero[i][j] == 1)
+            for (int j = 0; j < this->cols; j++)
             {
-                if (tablero[i][j - 1] == 0)
+                // Verifica si la celda actual está ocupada
+                if (this->tablero[i][j] == 1)
                 {
-                    siguiente[i][j - 1] == 1;
-                    siguiente[i][j] == 0;
-                }
-            }
+                    int vecinos = this->calcularVecinos(i, j);
 
-            if (j < this->cols - 1 && this->tablero[i][j + 1] == 0)
-                tablero[i][j] == 1;
-            else
-            {
-            }
+                    if (vecinos == 1)
+                    {
+                        // La celda actual se vacía y la celda abajo se ocupa
+                        this->siguiente[i][j] = 0;
+                        this->siguiente[i][j + 1] = 1;
+                    }
 
-            if (j < this->cols - 1 && i > 0 && this->tablero[i - 1][j + 2] == 0)
-                tablero[i][j] == 1;
-            else
-            {
-            }
+                    else if (vecinos == 2)
+                    {
+                        // La celda actual se vacía y la celda que está abajo 2 espacios y 1 a la izquierda se ocupa
+                        this->siguiente[i][j] = 0;
+                        this->siguiente[i - 1][j + 2] = 1;
+                    }
 
-            if (j < this->cols - 1 && i < this->rows - 1 && this->tablero[i + 1][j + 2] == 0)
-                tablero[i][j] == 1;
-            else
-            {
-            }
+                    else if (vecinos == 3)
+                    {
+                        // La celda actual se vacía y la celda que está abajo 2 espacios y 1 a la derecha se ocupa
+                        this->siguiente[i][j] = 0;
+                        this->siguiente[i + 1][j + 2] = 1;
+                    }
 
-            /*
-            if (this->tablero[i][j] == 1)
-            {
-                if (vecinos < 2 || vecinos > 3)
-                {
-                    this->siguiente[i][j] = 0;
-                }
-                else
-                {
-                    this->siguiente[i][j] = 1;
+                    else if (vecinos == 0)
+                    {
+                        // La celda actual se queda ocupada
+                        this->siguiente[i][j] = 1;
+                    }
                 }
             }
-            else
-            {
-                if (vecinos == 3)
-                {
-                    this->siguiente[i][j] = 1;
-                }
-                else
-                {
-                    this->siguiente[i][j] = 0;
-                }
-            }
-            */
         }
-        
     }
-    this->tablero = siguiente;
+    this->tablero = this->siguiente;
+    /*
+    (Cosas de la act de juego de la vida)
+
+    int vecinos = this->calcularVecinos(i, j);
+    if (this->tablero[i][j] == 1)
+    {
+        if (vecinos < 2 || vecinos > 3)
+        {
+            this->siguiente[i][j] = 0;
+        }
+        else
+        {
+            this->siguiente[i][j] = 1;
+        }
+    }
+    else
+    {
+        if (vecinos == 3)
+        {
+            this->siguiente[i][j] = 1;
+        }
+        else
+        {
+            this->siguiente[i][j] = 0;
+        }
+    }
+    */
 }
 
 int Grid::calcularVecinos(int i, int j)
 {
     int vecinos = 0;
+    // revisamos que no se pase del limite y que este vacia
+    if (j < this->cols - 1 && this->tablero[i][j + 1] == 0)
+    {
+        vecinos = 1;
+    }
+    else
+    {
+        // Si hay una casilla disponible dos espacios abajo y uno a la izquierda
+        if (j < this->cols - 2 && i > 0 && this->tablero[i - 1][j + 2] == 0)
+            vecinos = 2;
+
+        // Si hay una casilla disponible dos espacios abajo y uno a la derecha
+        if (j < this->cols - 2 && i < this->rows - 1 && this->tablero[i + 1][j + 2] == 0)
+            vecinos = 3;
+    }
+
+    return vecinos;
+    /*
+    (Cosas de la act de juego de la vida)
+
+    // arriba a la izquierda
+    if (i > 0 && j > 0 && this->tablero[i - 1][j - 1] == 1)
+        vecinos++;
+    // arriba
+    if (j > 0 && this->tablero[i][j - 1] == 1)
+        vecinos++;
+    // arriba a la derecha
+    if (j > 0 && i < this->rows - 1 && this->tablero[i + 1][j - 1] == 1)
+        vecinos++;
+
+    // izquierda
+    if (i > 0 && this->tablero[i - 1][j] == 1)
+        vecinos++;
+    // derecha
+    if (i < this->rows - 1 && this->tablero[i + 1][j] == 1)
+        vecinos++;
+
+    // abajo a la izquierda
+    if (i > 0 && j < this->cols - 1 && this->tablero[i - 1][j + 1] == 1)
+        vecinos++;
+    // // abajo
+    if (j < this->cols - 1 && this->tablero[i][j + 1] == 1)
+        vecinos++;
+    // abajo a la derecha
+    if (i < this->rows - 1 && j < this->cols - 1 && this->tablero[i + 1][j + 1] == 1)
+        vecinos++;
+
+    */
 }

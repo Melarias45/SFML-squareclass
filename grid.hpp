@@ -11,8 +11,6 @@ private:
     vector<vector<int>> tablero;
     vector<vector<int>> siguiente;
     int rows, cols, w, h;
-    Vector2f speed;
-    Vector2f acc; 
 
 public:
     
